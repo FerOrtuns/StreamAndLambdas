@@ -46,22 +46,24 @@ public class AppCommandRunner implements CommandLineRunner {
                 .forEach(p -> log.info(p.toString()));
 
     }
+
     private List<Product> exercise01() {
 
         return productRepos.findAll()
                 .stream()
-                .filter( product -> product.getCategory().equalsIgnoreCase("book"))
+                .filter(product -> product.getCategory().equalsIgnoreCase("book"))
                 .filter(product -> product.getPrice() > 100)
                 .toList();
 
     }
+
     private List<Order> exercise02() {
 
         return orderRepos.findAll()
                 .stream()
                 .filter(order -> order.getProducts()
-                .stream()
-                .anyMatch(product -> product.getCategory().equalsIgnoreCase("baby")))
+                        .stream()
+                        .anyMatch(product -> product.getCategory().equalsIgnoreCase("baby")))
                 .toList();
 
 
@@ -75,7 +77,7 @@ public class AppCommandRunner implements CommandLineRunner {
         return productRepos.findAll()
                 .stream()
                 .filter(product -> product.getCategory().equalsIgnoreCase("toys"))
-                .peek(product -> product.setPrice((Double) (product.getPrice()*0.9)))
+                .peek(product -> product.setPrice((Double) (product.getPrice() * 0.9)))
                 .toList();
 
     }
@@ -88,7 +90,7 @@ public class AppCommandRunner implements CommandLineRunner {
         return productRepos.findAll()
                 .stream()
                 .filter(product -> product.getCategory().equalsIgnoreCase("toys"))
-                .map(product -> product.withPrice((Double) (product.getPrice()*0.9)))
+                .map(product -> product.withPrice((Double) (product.getPrice() * 0.9)))
                 .toList();
 
     }
@@ -102,7 +104,7 @@ tier 2 between 01-Feb-2021 and 01-Apr-2021
                 .stream()
                 .filter(order -> order.getCustomer().getTier().equals(2))
                 .filter(order -> order.getOrderDate().isAfter(LocalDate.of(2021, 2, 1)) &&
-                                order.getOrderDate().isBefore(LocalDate.of(2021, 4, 1)))
+                        order.getOrderDate().isBefore(LocalDate.of(2021, 4, 1)))
                 //.map(Order::getProducts)
                 .flatMap(order -> order.getProducts().stream())
                 .distinct()
@@ -113,18 +115,18 @@ tier 2 between 01-Feb-2021 and 01-Apr-2021
 
     private List<Product> exercise05() {
         /* Exercise 5 — Get the cheapest products of “Books” category
-        */
+         */
 
         return productRepos.findAll()
                 .stream()
-                .filter( product -> product.getCategory().equalsIgnoreCase("Books"))
+                .filter(product -> product.getCategory().equalsIgnoreCase("Books"))
                 .sorted(Comparator.comparing(Product::getPrice).reversed())
                 .toList();
 
 
     }
 
-    private List<Order> exercise06 () {
+    private List<Order> exercise06() {
         //Exercise 6 — Get the 3 most recent placed order
 
         return orderRepos.findAll()
@@ -134,7 +136,7 @@ tier 2 between 01-Feb-2021 and 01-Apr-2021
                 .toList();
     }
 
-    private List<Product> exercise07 () {
+    private List<Product> exercise07() {
         //Exercise 7 — Get a list of orders which were ordered on 15-Mar-2021, log
         //the order records to the console and then return its product list
 
@@ -148,35 +150,35 @@ tier 2 between 01-Feb-2021 and 01-Apr-2021
                 .toList();
     }
 
-    private double exercise08 () {
+    private double exercise08() {
         //Exercise 8 — Calculate total lump sum of all orders placed in Feb 2021
 
 
         return orderRepos.findAll()
                 .stream()
                 .filter(o -> o.getOrderDate().isBefore(LocalDate.of(2021, 3, 1)) &&
-                            o.getOrderDate().isAfter(LocalDate.of(2021, 1, 31)))
+                        o.getOrderDate().isAfter(LocalDate.of(2021, 1, 31)))
                 .flatMap(o -> o.getProducts().stream())
                 .mapToDouble(Product::getPrice)
                 .sum();
 
     }
 
-    private double exercise09 () {
+    private double exercise09() {
         //Exercise 9 — Calculate order average payment placed on 14-Mar-2021
 
 
         return orderRepos.findAll()
                 .stream()
                 .filter(order -> order.getOrderDate().isEqual(LocalDate.of(2021, 3, 14)))
-                .flatMap( p -> p.getProducts().stream())
+                .flatMap(p -> p.getProducts().stream())
                 .mapToDouble(Product::getPrice)
                 .average()
                 .getAsDouble();
 
     }
 
-    private DoubleSummaryStatistics exercise10 () {
+    private DoubleSummaryStatistics exercise10() {
         //Exercise 10 — Obtain a collection of statistic figures (i.e. sum, average,
         //max, min, count) for all products of category “Books”
 
@@ -187,7 +189,7 @@ tier 2 between 01-Feb-2021 and 01-Apr-2021
                 .summaryStatistics();
     }
 
-    private HashMap<Long, Integer> exercise11 () {
+    private HashMap<Long, Integer> exercise11() {
         //Exercise 11 — Obtain a data map with order id and order’s product count
 
         return (HashMap<Long, Integer>) orderRepos.findAll()
@@ -198,31 +200,30 @@ tier 2 between 01-Feb-2021 and 01-Apr-2021
                 ));
     }
 
-    private HashMap<Customer, List<Order>> exercise12 () {
+    private HashMap<Customer, List<Order>> exercise12() {
         //Exercise 12 — Produce a data map with order records grouped by customer
 
         return (HashMap<Customer, List<Order>>) orderRepos.findAll()
                 .stream()
                 .collect(Collectors.groupingBy(Order::getCustomer));
     }
-//joder
-    private HashMap<Order, Double> exercise13 () {
+
+    private HashMap<Order, Double> exercise13() {
         //Exercise 13 — Produce a data map with order record and product total sum
 
         return (HashMap<Order, Double>) orderRepos.findAll()
                 .stream()
                 .collect(
                         Collectors.toMap(
-                        Function.identity(),
-                        order -> order.getProducts().stream()
-                                .mapToDouble(p -> p.getPrice()).sum())
+                                Function.identity(),
+                                order -> order.getProducts().stream()
+                                        .mapToDouble(p -> p.getPrice()).sum())
                 );
-
 
 
     }
 
-    private HashMap<String, List<String>> exercise14 () {
+    private HashMap<String, List<String>> exercise14() {
         //Exercise 14 — Obtain a data map with list of product name by category
 
         return (HashMap<String, List<String>>) productRepos.findAll()
@@ -234,7 +235,7 @@ tier 2 between 01-Feb-2021 and 01-Apr-2021
                 );
     }
 
-    private HashMap<String, Optional<Product>> exercise15 () {
+    private HashMap<String, Optional<Product>> exercise15() {
         //Exercise 15 — Get the most expensive product by category
 
 
@@ -244,6 +245,6 @@ tier 2 between 01-Feb-2021 and 01-Apr-2021
                         Collectors.groupingBy(
                                 Product::getCategory,
                                 Collectors.maxBy(Comparator.comparing(Product::getPrice))
-                ));
+                        ));
     }
 }
