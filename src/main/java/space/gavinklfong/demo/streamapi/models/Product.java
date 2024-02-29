@@ -31,6 +31,7 @@ public class Product {
 
 	private String name;
 
+	@With
 	private String category;
 	
 	@With
@@ -40,5 +41,11 @@ public class Product {
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	private Set<Order> orders;
+
+	public Product cloneWithPrice (Double newPrice) {
+		Product product = new Product(this.id, this.name, this.category, newPrice, this.orders);
+
+		return product;
+	}
 	
 }
